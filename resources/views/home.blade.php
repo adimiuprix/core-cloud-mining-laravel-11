@@ -11,33 +11,21 @@
     </form>
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script type="text/javascript">
-        function validateFormLogin(){
-            var min_length = 10;
-            var max_length = 100;
-            var error_message = "";
+    <script>
+        function validateFormLogin() {
+            const len = $("#username").val().length;
+            const msg = {
+                empty: "Harap di isi...",
+                short: "Wallet salah, masukkan dengan alamat address crypto!",
+                long: "Alamat kepanjangan!",
+                success: "Tunggu ya, lagi di proses...."
+            };
 
-            var val_length = $("#username").val().length;
-            if(val_length > 0)
-            {
-                if(val_length <  min_length ){
-                    error_message = "Wallet salah, masukkan dengan alamat address crypto!";
-                    $("#result").html(error_message);
-                    return false;
-                }
-                if(val_length > max_length){
-                    error_message = "Alamat kepanjangan!";
-                    $("#result").html(error_message);
-                    return false;
-                }
-                success_message = "Tunggu ya, lagi di proses....";
-                $("#result").text(success_message);
-                return true;
-            }else{
-                error_message = "Harap di isi...";
-                $("#result").text(error_message);
-                return false;
-            }
+            if (!len) return $("#result").text(msg.empty), false;
+            if (len < 10) return $("#result").html(msg.short), false;
+            if (len > 100) return $("#result").html(msg.long), false;
+            
+            return $("#result").text(msg.success), true;
         }
     </script>
 </body>

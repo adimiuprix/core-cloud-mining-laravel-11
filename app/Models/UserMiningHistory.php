@@ -2,63 +2,36 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\{Factories\HasFactory, Model, Relations\BelongsTo, Builder};
 
 class UserMiningHistory extends Model
 {
     use HasFactory;
 
-    protected $table = 'user_mining_histories';
+    protected $fillable = ['user_id', 'plan_id', 'status', 'last_sum', 'expire_date'];
+    protected $casts = ['expire_date' => 'integer', 'last_sum' => 'integer'];
 
-    protected $fillable = [
-        'user_id',
-        'plan_id',
-        'status',
-        'last_sum',
-        'expire_date'
-    ];
-
-    protected $casts = [
-        'expire_date' => 'integer',
-        'last_sum' => 'integer'
-    ];
-
-    /**
-     * Get the user that owns the mining history.
-     */
-    public function user()
+    // Relationships
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    /**
-     * Get the plan associated with the mining history.
-     */
-    public function plan()
+    public function plan(): BelongsTo
     {
         return $this->belongsTo(Plan::class);
     }
 
-    /**
-     * Scope a query to only include active mining histories.
-     */
-    public function scopeActive()
+    // Scopes
+    public function scopeActive(Builder $query): Builder
     {
-        return $this->where('status', 'active');
+        return $query->where('status', 'active');
     }
 
-    /**
-     * Calculate earnings since last update.
-     */
+    // Business Logic
     public function calculateEarnings(): float
     {
-        $currentTime = time();
-        $startTime = $this->last_sum ?: $this->created_at->timestamp;
-
-        $seconds = $currentTime - $startTime;
-        $earning = $seconds * ($this->plan->earning_rate / 60);
-
-        return (float) $earning;
+        return (time() - ($this->last_sum ?? $this->created_at->timestamp)) 
+            * ($this->plan->earning_rate / 60);
     }
 }

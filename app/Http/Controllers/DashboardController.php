@@ -3,19 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 
 class DashboardController extends Controller
 {
-    public function index()
+    public function index(): View|RedirectResponse
     {
-        $sessionData = session()->get('user_data');
-
-        if (!$sessionData) {
-            return redirect()->to('/');
-        }
-
-        /** @var User $user */
-        $user = User::findOrFail($sessionData['id']);
+        $user = User::find(session('user_data.id'));
+        
+        if (!$user) return redirect('/');
 
         // Orchestrate background tasks
         $user->expirePlans();

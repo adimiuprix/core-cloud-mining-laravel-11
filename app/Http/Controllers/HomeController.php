@@ -2,43 +2,31 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Plan;
-use App\Models\User;
-use Illuminate\Http\Request;
+use App\Models\{Plan, User};
+use Illuminate\Http\{Request, RedirectResponse};
 
 class HomeController extends Controller
 {
-    public function authorize(Request $request)
+    public function authorize(Request $request): RedirectResponse
     {
-        $username = $request->input('username');
+        $user = User::firstOrCreate(['username' => $request->input('username')]);
 
-        $user = User::firstOrCreate(
-            ['username' => $username]
-        );
-
-        // Assign free plan if it's a new user or has no active histories
+        // Assign free plan if new user or no active histories
         if ($user->wasRecentlyCreated || !$user->miningHistories()->exists()) {
-            $defaultPlan = Plan::where('is_default', true)->first();
-
-            if ($defaultPlan) {
-                $user->miningHistories()->create([
-                    'plan_id'     => $defaultPlan->id,
-                    'status'      => 'active',
-                    'expire_date' => time() + (7 * 24 * 60 * 60),
-                    'last_sum'    => time()
-                ]);
-            }
+            Plan::where('is_default', true)->first()?->histories()->create([
+                'user_id'     => $user->id,
+                'status'      => 'active',
+                'expire_date' => time() + 604800, // 7 days in seconds
+                'last_sum'    => time()
+            ]);
         }
 
-        session(['user_data' => $user]);
-
-        return redirect()->to('dashboard');
+        return redirect('dashboard')->with('user_data', $user);
     }
 
-    public function logout()
+    public function logout(): RedirectResponse
     {
         session()->flush();
-
-        return redirect()->to('/');
+        return redirect('/');
     }
 }

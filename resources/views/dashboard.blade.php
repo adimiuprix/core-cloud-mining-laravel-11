@@ -18,35 +18,21 @@
     </div>
 
     <script src="https://code.jquery.com/jquery-4.0.0.js"></script>
-    <script type="text/javascript">
-    $(document).ready(function() {
-        // Preserve original business logic values
-        const initialBalance = parseFloat($('#getBalance').val()) || 0;
-        const earningRatePerMinute = parseFloat({{ $user_earning_rate }}) || 0;
+    <script>
+    $(() => {
+        const initial = parseFloat($('#getBalance').val()) || 0;
+        const ratePerMs = (parseFloat({{ $user_earning_rate }}) || 0) / 60000;
+        const start = Date.now();
+        
+        $('#balance').text(initial.toFixed(8));
 
-        // Critical optimization: Calculate precise real-time value instead of incremental steps
-        const ratePerMs = earningRatePerMinute / (60 * 1000); // True rate per millisecond
-        const startTime = Date.now();
+        const animate = () => {
+            const balance = (initial + (Date.now() - start) * ratePerMs).toFixed(8);
+            $('#balance').text() !== balance && $('#balance').text(balance);
+            requestAnimationFrame(animate);
+        };
 
-        // Immediately normalize display format to match update precision (prevents first-frame jump)
-        $('#balance').text(initialBalance.toFixed(8));
-
-        // Smooth animation loop using browser's refresh rate
-        function animateBalance() {
-            const elapsedMs = Date.now() - startTime;
-            const currentBalance = initialBalance + (elapsedMs * ratePerMs);
-            const formatted = currentBalance.toFixed(8);
-
-            // Only update DOM when visible value changes (reduces layout thrashing)
-            if ($('#balance').text() !== formatted) {
-                $('#balance').text(formatted);
-            }
-
-            requestAnimationFrame(animateBalance);
-        }
-
-        // Start smooth animation loop
-        requestAnimationFrame(animateBalance);
+        requestAnimationFrame(animate);
     });
     </script>
 </body>
