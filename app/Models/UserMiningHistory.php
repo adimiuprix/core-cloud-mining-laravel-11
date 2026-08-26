@@ -43,9 +43,9 @@ class UserMiningHistory extends Model
     /**
      * Scope a query to only include active mining histories.
      */
-    public function scopeActive($query)
+    public function scopeActive()
     {
-        return $query->where('status', 'active');
+        return $this->where('status', 'active');
     }
 
     /**

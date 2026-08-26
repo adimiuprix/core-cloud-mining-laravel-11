@@ -20,7 +20,7 @@ return new class extends Migration
             $table->boolean('is_default');
             $table->decimal('point_per_day', 20, 8);
             $table->string('version');
-            $table->decimal('earning_rate', 20, 8);
+            $table->decimal('earning_rate', 20, 8)->comment('per minutes');
             $table->decimal('price', 20, 8);
             $table->integer('duration');
             $table->decimal('profit', 20, 8);
@@ -33,9 +33,9 @@ return new class extends Migration
             [
                 'plan_name'         => 'Free',
                 'is_default'        => true,
-                'point_per_day'     => 0.02000000,
+                'point_per_day'     => 0.00144000,
                 'version'           => 'Free',
-                'earning_rate'      => 0.00091389,
+                'earning_rate'      => 0.00000100,
                 'price'             => 0.00000000,
                 'duration'          => 0,
                 'profit'            => 100,
@@ -43,9 +43,9 @@ return new class extends Migration
             [
                 'plan_name'         => 'Plan 1',
                 'is_default'        => false,
-                'point_per_day'     => 0.10000000,
+                'point_per_day'     => 0.01440000,
                 'version'           => 'Plan 1',
-                'earning_rate'      => 0.05091389,
+                'earning_rate'      => 0.00001000,
                 'price'             => 5.00000000,
                 'duration'          => 10,
                 'profit'            => 110,
@@ -55,7 +55,7 @@ return new class extends Migration
                 'is_default'        => false,
                 'point_per_day'     => 0.10000000,
                 'version'           => 'Plan 2',
-                'earning_rate'      => 0.55099089,
+                'earning_rate'      => 0.00038263,
                 'price'             => 10.00000000,
                 'duration'          => 10,
                 'profit'            => 110,
@@ -63,11 +63,11 @@ return new class extends Migration
             [
                 'plan_name'         => 'Plan 3',
                 'is_default'        => false,
-                'point_per_day'     => 0.10000000,
+                'point_per_day'     => 3.00000000,
                 'version'           => 'Plan 3',
-                'earning_rate'      => 5.25091389,
+                'earning_rate'      => 0.00208333,
                 'price'             => 20.00000000,
-                'duration'          => 20,
+                'duration'          => 10,
                 'profit'            => 150,
             ],
         ];

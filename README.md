@@ -1,6 +1,6 @@
 # Core Cloud Mining Platform
 
-Platform simulasi Cloud Mining aset digital (Point/Crypto) yang dibangun menggunakan **Laravel 12**. Platform ini menawarkan pengalaman penambangan real-time yang mulus dengan visualisasi balance yang diperbarui setiap milidetik di sisi client.
+Platform simulasi Cloud Mining aset digital (Point/Crypto) yang dibangun menggunakan **Laravel**. Platform ini menawarkan pengalaman penambangan real-time yang mulus dengan visualisasi balance yang diperbarui setiap milidetik di sisi client.
 
 ---
 
@@ -17,7 +17,7 @@ Platform simulasi Cloud Mining aset digital (Point/Crypto) yang dibangun menggun
 
 ## 🛠️ Tech Stack
 
-- **Backend**: Laravel 12 (PHP 8.2+)
+- **Backend**: Laravel 13 (PHP 8.3+)
 - **Frontend**: Tailwind CSS v4, Vite, Blade Templates
 - **Client Logic**: jQuery 4.0.0 & Vanilla JS (v_v)
 - **Database**: MySQL / SQLite (mendukung Eloquent ORM)
@@ -31,7 +31,7 @@ Ikuti langkah-langkah berikut untuk menjalankan project di lingkungan lokal Anda
 
 1. **Clone Repository**
    ```bash
-   git clone https://github.com/adimiuprix/core-cloud-mining-laravel-12.git
+   git clone https://github.com/adimiuprix/core-cloud-mining-laravel.git
    cd tosun
    ```
 
